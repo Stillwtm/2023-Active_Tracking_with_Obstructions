@@ -16,9 +16,10 @@ class RandomAgent(object):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=None)
-    parser.add_argument("-e", "--env_id", nargs='?', default='UnrealTrack-TrackRoomtargetbp-DiscreteColor-v0',
+    parser.add_argument("-e", "--env_id", nargs='?', default='UnrealTrack-GeometryTrackRam-DiscreteColor-v0',
                         help='Select the environment to run')
     # UnrealSearch-RealisticRoomDoor-DiscreteColor-v0
+    # UnrealTrack-TrackRoomtargetbp-DiscreteColor-v0
     parser.add_argument("-r", '--render', dest='render', action='store_true', help='show env using cv2')
     args = parser.parse_args()
     env = gym.make(args.env_id)
@@ -36,13 +37,13 @@ if __name__ == '__main__':
         t0 = time.time()
         while True:
             action = agent.act(ob, reward, done)
-            ob, reward, done, _ = env.step(action)
+            ob, reward, done, _ = env.step(action=None)
             count_step += 1
             if args.render:
                 img = env.render(mode='rgb_array')
                 #  img = img[..., ::-1]  # bgr->rgb
                 cv2.imshow('show', img)
-                cv2.waitKey(1000)
+                cv2.waitKey(50)
             if done:
                 fps = count_step / (time.time() - t0)
                 print ('Fps:' + str(fps))

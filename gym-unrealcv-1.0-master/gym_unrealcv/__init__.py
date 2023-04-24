@@ -19,7 +19,7 @@ for env in ['TrackRoom']:# , 'UrbanCity', 'UrbanRoad', 'Garage', 'SnowForest', '
                     setting_file = 'track/{env}.json'.format(env=env)
                     register(
                         id=name,
-                        entry_point='gym_unrealcv.envs:UnrealCvTrack',
+                        entry_point='gym_unrealcv.envs:UnrealCvGeometry',
                         kwargs={'setting_file': setting_file,
                                 'category': category,
                                 'reset_type': 0,
@@ -31,6 +31,31 @@ for env in ['TrackRoom']:# , 'UrbanCity', 'UrbanRoad', 'Garage', 'SnowForest', '
                         max_episode_steps=500
                     )
 
+
+# UnrealCvGeometry
+for env in ['GeometryTrack']:# , 'UrbanCity', 'UrbanRoad', 'Garage', 'SnowForest', 'Forest', 'Garden']:
+    setting_file = 'track/{env}.json'.format(env=env)
+    settings = load_env_setting(setting_file)
+    for i, reset in enumerate(['random', 'waypoint', 'testpoint']):  # reset type
+        for action in ['Discrete', 'Continuous']:  # action type
+            for obs in ['Color', 'Depth', 'Rgbd']:  # observation type
+                for category in ['Ram']: # settings['targets']:
+                    name = 'UnrealTrack-{env}{category}-{action}{obs}-v{reset}'.format(
+                        env=env, category=category, action=action, obs=obs, reset=i)
+                    setting_file = 'track/{env}.json'.format(env=env)
+                    register(
+                        id=name,
+                        entry_point='gym_unrealcv.envs:UnrealCvGeometry',
+                        kwargs={'setting_file': setting_file,
+                                'category': category,
+                                'reset_type': 0,
+                                'action_type': action,
+                                'observation_type': obs,
+                                'reward_type': 'distance',
+                                'docker': use_docker,
+                                },
+                        max_episode_steps=5000
+                    )
 
 
 # glass
@@ -85,26 +110,26 @@ for env in ['GlassRoom']:# , 'UrbanCity', 'UrbanRoad', 'Garage', 'SnowForest', '
 
 # Searching/Navigation
 # -------------------------------------------------
-# for env in ['RealisticRoom', 'Arch1']:
-#     setting_file = 'searching/{env}.json'.format(env=env)
-#     settings = load_env_setting(setting_file)
-#     for i, reset in enumerate(['random', 'waypoint', 'testpoint']):
-#         for action in ['Discrete', 'Continuous']:  # action type
-#             for obs in ['Color', 'Depth', 'Rgbd']:  # observation type
-#                 for category in settings['targets']:
-#                     register(
-#                         id='UnrealSearch-{env}{category}-{action}{obs}-v{reset}'.format(env=env, category=category, action=action, obs=obs, reset=i),
-#                         entry_point='gym_unrealcv.envs:UnrealCvSearch_base',
-#                         kwargs={'setting_file': 'searching/{env}.json'.format(env=env),
-#                                 'category': category,
-#                                 'reset_type': reset,
-#                                 'action_type': action,
-#                                 'observation_type': obs,
-#                                 'reward_type': 'bbox_distance',  # bbox, distance, bbox_distance
-#                                 'docker': use_docker,
-#                                 },
-#                         max_episode_steps=200
-#                     )
+for env in ['RealisticRoom', 'Arch1']:
+    setting_file = 'searching/{env}.json'.format(env=env)
+    settings = load_env_setting(setting_file)
+    for i, reset in enumerate(['random', 'waypoint', 'testpoint']):
+        for action in ['Discrete', 'Continuous']:  # action type
+            for obs in ['Color', 'Depth', 'Rgbd']:  # observation type
+                for category in settings['targets']:
+                    register(
+                        id='UnrealSearch-{env}{category}-{action}{obs}-v{reset}'.format(env=env, category=category, action=action, obs=obs, reset=i),
+                        entry_point='gym_unrealcv.envs:UnrealCvSearch_base',
+                        kwargs={'setting_file': 'searching/{env}.json'.format(env=env),
+                                'category': category,
+                                'reset_type': reset,
+                                'action_type': action,
+                                'observation_type': obs,
+                                'reward_type': 'bbox_distance',  # bbox, distance, bbox_distance
+                                'docker': use_docker,
+                                },
+                        max_episode_steps=200
+                    )
 
 # # ------------------------------------------------------------------
 # # Robot Arm

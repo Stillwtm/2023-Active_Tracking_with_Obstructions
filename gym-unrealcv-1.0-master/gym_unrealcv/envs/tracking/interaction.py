@@ -10,6 +10,32 @@ class Tracking(Navigation):
         super(Tracking, self).__init__(env=env, port=port, ip=ip, cam_id=cam_id, resolution=resolution)
         self.obstacles = []
 
+    # def random_texture(self, backgrounds, img_dirs, num=5):
+    #     if num < 0:
+    #         sample_index = range(len(backgrounds))
+    #     else:
+    #         sample_index = np.random.choice(len(backgrounds), num, replace=False)
+    #     for id in sample_index:
+    #         target = backgrounds[id]
+    #         img_dir = img_dirs[np.random.randint(0, len(img_dirs))]
+    #         self.set_texture(target, (1, 1, 1), np.random.uniform(0, 1, 3), img_dir, np.random.randint(1, 4))
+    #         time.sleep(0.03)
+
+    # snorlax
+    def start_move(self, target):
+        cmd = 'vbp {target} start_move'
+        res = None
+        while res is None:
+            res = self.client.request(cmd.format(target=target))
+
+    # snorlax
+    def stop_move(self, target):
+        cmd = 'vbp {target} stop_move'
+        res = None
+        while res is None:
+            res = self.client.request(cmd.format(target=target))
+
+    # snorlax
     def random_texture(self, backgrounds, img_dirs, num=5):
         if num < 0:
             sample_index = range(len(backgrounds))
@@ -18,7 +44,7 @@ class Tracking(Navigation):
         for id in sample_index:
             target = backgrounds[id]
             img_dir = img_dirs[np.random.randint(0, len(img_dirs))]
-            self.set_texture(target, (1, 1, 1), np.random.uniform(0, 1, 3), img_dir, np.random.randint(1, 4))
+            self.set_texture(target, img_dir)
             time.sleep(0.03)
 
     def random_player_texture(self, player, img_dirs, num):
@@ -240,21 +266,25 @@ class Tracking(Navigation):
 
     def random_obstacles(self, objects, img_dirs, num, area, start_area, texture=False):
         sample_index = np.random.choice(len(objects), num, replace=False)
+        self.hide_objects(objects)
         for id in sample_index:
+            print("id:", id)
             obstacle = objects[id]
             self.obstacles.append(obstacle)
             # texture
             if texture:
                 img_dir = img_dirs[np.random.randint(0, len(img_dirs))]
-                self.set_texture(obstacle, (1, 1, 1), np.random.uniform(0, 1, 3), img_dir, np.random.randint(1, 4))
+                self.set_texture(obstacle, img_dir)
             # scale
-            self.set_obj_scale(obstacle, np.random.uniform(0.3, 3, 3))
+            # self.set_obj_scale(obstacle, np.random.uniform(0.3, 3, 3))
             # location
             obstacle_loc = [start_area[0], start_area[2], 0]
             while start_area[0] <= obstacle_loc[0] <= start_area[1] and start_area[2] <= obstacle_loc[1] <= start_area[3]:
                 obstacle_loc[0] = np.random.uniform(area[0]+100, area[1]-100)
                 obstacle_loc[1] = np.random.uniform(area[2]+100, area[3]-100)
                 obstacle_loc[2] = np.random.uniform(area[4], area[5])
+            print("loc:", obstacle_loc)
+            self.show_obj(obstacle)
             self.set_obj_location(obstacle, obstacle_loc)
             time.sleep(0.01)
 

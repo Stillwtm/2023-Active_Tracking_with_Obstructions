@@ -41,6 +41,12 @@ class Navigation(UnrealCv):
             self.img_color = state = self.read_image(cam_id, 'object_mask', mode)
         return state
 
+
+    # def get_observation(self, cam_id, observation_type):
+    #     assert observation_type == 'Color'
+    #     if observation_type == 'Color':
+    #         self.img_color
+
     def define_observation(self, cam_id, observation_type, mode='direct'):
         state = self.get_observation(cam_id, observation_type, mode)
         if observation_type == 'Color' or observation_type == 'CG':
@@ -71,13 +77,18 @@ class Navigation(UnrealCv):
         time.sleep(2)
         self.keyboard('RightMouseButton')  # close the door
 
-    def set_texture(self, target, color=(1, 1, 1), param=(0, 0, 0), picpath=None, tiling=1, e_num=0): #[r, g, b, meta, spec, rough, tiling, picpath]
-        param = param / param.max()
-        # color = color / color.max()
-        cmd = 'vbp {target} set_mat {e_num} {r} {g} {b} {meta} {spec} {rough} {tiling} {picpath}'
-        res = self.client.request(cmd.format(target=target, e_num=e_num, r=color[0], g=color[1], b=color[2],
-                               meta=param[0], spec=param[1], rough=param[2], tiling=tiling,
-                               picpath=picpath))
+    # def set_texture(self, target, color=(1, 1, 1), param=(0, 0, 0), picpath=None, tiling=1, e_num=0): #[r, g, b, meta, spec, rough, tiling, picpath]
+    #     param = param / param.max()
+    #     # color = color / color.max()
+    #     cmd = 'vbp {target} set_mat {e_num} {r} {g} {b} {meta} {spec} {rough} {tiling} {picpath}'
+    #     res = self.client.request(cmd.format(target=target, e_num=e_num, r=color[0], g=color[1], b=color[2],
+    #                            meta=param[0], spec=param[1], rough=param[2], tiling=tiling,
+    #                            picpath=picpath))
+
+    # snorlax
+    def set_texture(self, target, picpath):
+        cmd = 'vbp {target} set_mat {picpath}'
+        res = self.client.request(cmd.format(target=target, picpath=picpath))
 
     def set_light(self, target, direction, intensity, color): # param num out of range
         cmd = 'vbp {target} set_light {row} {yaw} {pitch} {intensity} {r} {g} {b}'

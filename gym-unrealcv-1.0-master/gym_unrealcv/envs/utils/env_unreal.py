@@ -40,7 +40,7 @@ class RunUnreal():
             print ('Running docker-free env, pid:{}'.format(self.env.pid))
 
         print ('Please wait for a while to launch env......')
-        time.sleep(7) #lookbzz
+        time.sleep(5) # snorlax
         return env_ip, port
 
     def get_path2UnrealEnv(self):
