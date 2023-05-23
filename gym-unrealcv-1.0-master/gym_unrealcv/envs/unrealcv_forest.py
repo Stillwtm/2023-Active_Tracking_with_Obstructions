@@ -16,7 +16,7 @@ Task: Learn to follow the target object(moving person) in the scene
 '''
 
 
-class UnrealCvGeometry(gym.Env):
+class UnrealCvForest(gym.Env):
     def __init__(self,
                  setting_file,
                  category=0,
@@ -41,17 +41,13 @@ class UnrealCvGeometry(gym.Env):
         self.min_distance = setting['min_distance']
         self.max_direction = setting['max_direction']
         self.max_steps = setting['max_steps']
-        self.height = setting['height']
         self.pitch = setting['pitch']
         self.reset_area = setting['reset_area']
-        self.background_list = setting['backgrounds']
-        self.light_list = setting['lights']
-        self.target_num = setting['target_num']
         self.exp_distance = setting['exp_distance']
         self.safe_start = setting['safe_start']
         self.start_area = self.get_start_area(self.safe_start[0], 30)
 
-        self.obstacle_list = setting['obstacles']
+        self.spawners = setting['spawners']
         self.texture_interval = setting['texture_interval']
         self.texture_cnt = 0
 
@@ -146,7 +142,9 @@ class UnrealCvGeometry(gym.Env):
         if self.texture_cnt > self.texture_interval:
             # print("Texture Change!!!")
             self.texture_cnt = 0
-            self.unrealcv.random_light(self.light_list)
+            self.unrealcv.destroy_trees(self.spawners[0])
+            self.unrealcv.random_trees(self.spawners[0], 100)
+            # self.unrealcv.random_light(self.light_list)
             # self.unrealcv.random_texture(self.background_list, self.textures_list)
             # self.unrealcv.random_obstacles(self.obstacle_list, self.textures_list,
             #                             10, self.reset_area, self.start_area, texture=True)
@@ -208,11 +206,6 @@ class UnrealCvGeometry(gym.Env):
         self.count_steps = 0
         
         self.unrealcv.start_move(self.target_list[0])
-
-        # self.unrealcv.random_texture(self.background_list, self.textures_list)
-
-        # self.unrealcv.random_obstacles(self.obstacle_list, self.textures_list,
-        #                                 10, self.reset_area, self.start_area, texture=True)
 
         print("Reset done!")
 

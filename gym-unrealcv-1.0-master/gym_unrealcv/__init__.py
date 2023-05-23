@@ -57,6 +57,29 @@ for env in ['GeometryTrack']:# , 'UrbanCity', 'UrbanRoad', 'Garage', 'SnowForest
                         max_episode_steps=5000
                     )
 
+# UnrealCvForeset
+for env in ['ForestTrack']:# , 'UrbanCity', 'UrbanRoad', 'Garage', 'SnowForest', 'Forest', 'Garden']:
+    setting_file = 'track/{env}.json'.format(env=env)
+    settings = load_env_setting(setting_file)
+    for i, reset in enumerate(['random']):  # reset type
+        for action in ['Discrete', 'Continuous']:  # action type
+            for obs in ['Color', 'Depth', 'Rgbd']:  # observation type
+                    name = 'UnrealTrack-{env}-{action}{obs}-v{reset}'.format(
+                        env=env, category=category, action=action, obs=obs, reset=i)
+                    setting_file = 'track/{env}.json'.format(env=env)
+                    register(
+                        id=name,
+                        entry_point='gym_unrealcv.envs:UnrealCvForest',
+                        kwargs={'setting_file': setting_file,
+                                'category': category,
+                                'reset_type': 0,
+                                'action_type': action,
+                                'observation_type': obs,
+                                'reward_type': 'distance',
+                                'docker': use_docker,
+                                },
+                        max_episode_steps=5000
+                    )
 
 # glass
 for env in ['GlassRoom']:# , 'UrbanCity', 'UrbanRoad', 'Garage', 'SnowForest', 'Forest', 'Garden']:

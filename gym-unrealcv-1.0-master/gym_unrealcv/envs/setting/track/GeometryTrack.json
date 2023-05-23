@@ -9,7 +9,7 @@
 	"max_steps": 500,
 	"max_distance": 600,
 	"min_distance": 80,
-	"max_direction": 90,
+	"max_direction": 60,
 	"exp_distance": 250,
 	"texture_interval": 40,
 	"targets": [
@@ -42,7 +42,7 @@
 		"Floor_1", "Wall1_1", "Wall2_1", "Wall3_1", "Wall4_1"
 	],
 	"lights": [
-		"light1", "light2", "light3", "light4"
+		"PointLight_1", "PointLight_2", "PointLight_3", "PointLight_4"
 	],
 	"resetlist_num":0,
 	"reset_list": [

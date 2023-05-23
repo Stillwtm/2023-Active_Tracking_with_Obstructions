@@ -8,4 +8,5 @@ from gym_unrealcv.envs.unrealcv_search_base import UnrealCvSearch_base
 from gym_unrealcv.envs.unrealcv_glass import UnrealCvGlass
 from gym_unrealcv.envs.unrealcv_track import UnrealCvTrack
 from gym_unrealcv.envs.unrealcv_geometry import UnrealCvGeometry
+from gym_unrealcv.envs.unrealcv_forest import UnrealCvForest
 from gym_unrealcv.envs.unrealcv_glass_locate import UnrealCvGlassLocate

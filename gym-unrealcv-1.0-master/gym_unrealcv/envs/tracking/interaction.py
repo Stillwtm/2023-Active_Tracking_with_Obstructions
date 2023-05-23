@@ -22,6 +22,20 @@ class Tracking(Navigation):
     #         time.sleep(0.03)
 
     # snorlax
+    def random_trees(self, spawner='Spawner', num=1):
+        cmd = f'vbp {spawner} random_trees {num}'
+        res = None
+        while res is None:
+            res = self.client.request(cmd)
+    
+    # snorlax
+    def destroy_trees(self, spawner='Spawner'):
+        cmd = f'vbp {spawner} destroy_trees'
+        res = None
+        while res is None:
+            res = self.client.request(cmd)
+
+    # snorlax
     def start_move(self, target):
         cmd = 'vbp {target} start_move'
         res = None
@@ -46,6 +60,11 @@ class Tracking(Navigation):
             img_dir = img_dirs[np.random.randint(0, len(img_dirs))]
             self.set_texture(target, img_dir)
             time.sleep(0.03)
+
+    def random_light(self, light_list):
+        cmd = 'vbp {target} random_light'
+        for light in light_list:
+            res = self.client.request(cmd.format(target=light))
 
     def random_player_texture(self, player, img_dirs, num):
         sample_index = np.random.choice(5, num)
@@ -268,7 +287,7 @@ class Tracking(Navigation):
         sample_index = np.random.choice(len(objects), num, replace=False)
         self.hide_objects(objects)
         for id in sample_index:
-            print("id:", id)
+            # print("id:", id)
             obstacle = objects[id]
             self.obstacles.append(obstacle)
             # texture
@@ -283,7 +302,7 @@ class Tracking(Navigation):
                 obstacle_loc[0] = np.random.uniform(area[0]+100, area[1]-100)
                 obstacle_loc[1] = np.random.uniform(area[2]+100, area[3]-100)
                 obstacle_loc[2] = np.random.uniform(area[4], area[5])
-            print("loc:", obstacle_loc)
+            # print("loc:", obstacle_loc)
             self.show_obj(obstacle)
             self.set_obj_location(obstacle, obstacle_loc)
             time.sleep(0.01)
